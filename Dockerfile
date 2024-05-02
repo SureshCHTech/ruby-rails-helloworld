@@ -1,13 +1,5 @@
-# Use the official Ruby image
+# Use the official Ruby image from Docker Hub
 FROM ruby:latest
-
-# Install essential Linux packages
-RUN apt-get update -qq && apt-get install -y \
-    build-essential \
-    nodejs \
-    yarn \
-    sqlite3 \
-    --no-install-recommends
 
 # Set the working directory in the container
 WORKDIR /app
@@ -16,13 +8,13 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 
 # Install Ruby dependencies
-RUN gem install bundler && bundle install
+RUN bundle install
 
 # Copy the rest of the application code into the container
 COPY . .
 
-# Expose port 3000 to the outside world
-EXPOSE 3000
+# Expose port 4567 (change to your application's actual port)
+EXPOSE 4567
 
-# Start the Rails server
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# Command to run the application
+CMD ["ruby", "app.rb", "-o", "0.0.0.0", "-p", "4567"]
